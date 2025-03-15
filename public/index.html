@@ -12,9 +12,26 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-
+    
     <!-- Main App Root -->
     <div id="root"></div>
+
+    <!-- 🚨 XSS Vulnerability: Injecting User Input Directly into innerHTML -->
+    <h2>User Comments</h2>
+    <div id="comments-section"></div>
+
+    <script>
+        // Simulating fetching user input from an API or storage (without sanitization)
+        let userComment = localStorage.getItem("userComment");
+
+        // 🚨 Vulnerability: Rendering unescaped user input in innerHTML
+        if (userComment) {
+            document.getElementById("comments-section").innerHTML = `<p>${userComment}</p>`;
+        }
+
+        // Example of how an attacker might exploit this
+        // In browser console: localStorage.setItem("userComment", "<script>alert('XSS Attack!')</script>");
+    </script>
 
   </body>
 </html>
